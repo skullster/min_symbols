@@ -1,0 +1,30 @@
+SymbolCount
+
+__init__ : 1) get base range MAX = number, MIN = min "base" where base*base + base >= number
+           2) NumberList object
+		      NumberList 
+			  __init__ : list of non-repeating numbers of the form a*b + c = number
+			  
+TODO : integrate Base.py Base object into SymbolCount.py ...
+
+
+SymbolCount.__get_base_symbol_data()
+This gets the minimum symbol count for the given number and base ONLY - a tracker is used to find the minimum symbols for this base
+
+SymbolCount.__get_symbol_count()
+Calls SymbolCount.__get_base_symbol_data() over all the number variants for the given number for a set base.
+Not sure what to do with the tracked objects here .... need to do something...need to further refine the metric, also do rolling metrics
+
+NEED a method to go over ALL the allowed bases for all number variants
+
+RECAP:
+Base
+
+__init__ : 1) set the base
+
+convert_number : 1) take a number and get it's representation in the given base
+get_symbol_count : return the number of symbols in the base representation of the number
+get_range : 1) take a number of symbols arguments
+            returns a minimum and maximum number array that represents the range
+			that can be represented by the given number of symbols for the base
+

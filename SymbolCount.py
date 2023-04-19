@@ -17,13 +17,16 @@ Created on Sun Feb 12 11:29:07 2023
 """    3 : min binary representation for each symbol AND what base that fits into! """
 import Base as B
 import NumberList as NL
+import MinimumTracker as MT
 import math
 
 class SymbolCount(object):
     def __init__(self, number):
         self.number = number
+        self.current_base = -1
         self.__get_base_range()
         self.number_list_obj = NL.NumberList(number)
+        self.tracker_obj = MT.MinimumTracker()
         self.number_list_obj.create_number_list()
         self.symbol_range_list = []
         self.file_obj = None
@@ -33,6 +36,7 @@ class SymbolCount(object):
     def __get_base_range(self):
         self.max_base = self.number
         
+        """ TODO : is this a correct assumption ie is this the minimum starting point? """
         """ Get min base - base * base + base >= number """ 
         """ base * base + base = base(base +1 ) > base^2 """
         """ So get the closest square root - test and increment if less than number """
@@ -43,8 +47,11 @@ class SymbolCount(object):
             
         self.min_base = min_base
         
-    """ Get the symbol count ranges for the given base """    
+    """ Get the symbol count ranges for the given base """
+    """ Foreach base get the ranges for each symbol count, """
+    """ starting at 1 through to the max possible symbols """ 
     def __symbol_count_for_base(self, base):
+        self.current_base = base
         base_obj = B.Base(base)
         base_obj.convert_number( self.number - 1 )
         max_symbols = base_obj.get_symbol_count()
@@ -62,7 +69,8 @@ class SymbolCount(object):
         """ Base range list should be set up prior to calling this """
         """ Get base symbol data """
         self.__get_base_symbol_data(0)
-        
+                
+    """ TODO: what is list_idx for?  just for initial set up ...."""    
     def __get_base_symbol_data(self, list_idx):
         mult_a_sym_cnt = -1
         mult_b_sym_cnt = -1
@@ -101,8 +109,11 @@ class SymbolCount(object):
                 break
             
         """ Base symbols count """
+        """ OK create lists of various minimums here """
         total = mult_a_sym_cnt + mult_b_sym_cnt + rem_sym_cnt
-        print( "Base symbols count %2d : %2d,  %2d,  %2d, %2d" % (list_idx, mult_a_sym_cnt, mult_b_sym_cnt, rem_sym_cnt, total ), file=self.file_obj )
+        
+        print("TOTAL : %d" % (total))
+        self.tracker_obj.add_object([mult_a_sym_cnt, mult_b_sym_cnt, rem_sym_cnt, self.current_base], total)
             
             
     def __get_minimum_symbol_data(self, list_idx):
@@ -120,7 +131,9 @@ class SymbolCount(object):
         base = self.min_base
         self.__symbol_count_for_base(base)
         self.__get_symbol_count()
-        
+        for min_obj in self.tracker_obj.object_tracker_list :
+            print( "Base symbols count a = %2d, b = %2d,  c = %2d, base : %2d" % (min_obj[0], min_obj[1], min_obj[2], min_obj[3]))
+
         self.file_obj.close()
         
     def print_symbols_to_file(self):
@@ -155,7 +168,7 @@ if __name__ == "__main__":
     """ aSymbolObj.print_list() """
     """ aSymbolObj.set_number(54) """
     aSymbolObj.print_list()
-    #aSymbolObj.print_range(31)
+    aSymbolObj.print_range(31)
     
     #aSymbolObj.print_symbols_to_file()
     aSymbolObj.get_symbol_data()
