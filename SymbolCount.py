@@ -50,6 +50,10 @@ class SymbolCount(object):
     """ Get the symbol count ranges for the given base """
     """ Foreach base get the ranges for each symbol count, """
     """ starting at 1 through to the max possible symbols """ 
+
+    """ NOTE: This is getting the ranges for a given base starting with one symbol to max symbols """
+    """       This can be used to find the symbol count for each part of the number a,b,remainder """#
+    """ RENAME __symbol_range_list_for_base """
     def __symbol_count_for_base(self, base):
         self.current_base = base
         base_obj = B.Base(base)
@@ -68,19 +72,23 @@ class SymbolCount(object):
     def __get_symbol_count(self):
         """ Base range list should be set up prior to calling this """
         """ Get base symbol data """
-        self.__get_base_symbol_data(0)
+        for number_obj in self.number_list_obj.number_list :
+            self.__get_base_symbol_data(number_obj)
                 
-    """ TODO: what is list_idx for?  just for initial set up ...."""    
-    def __get_base_symbol_data(self, list_idx):
+    """ TODO: what is list_idx for?  just for initial set up ...."""  
+    def __get_base_symbol_data(self, number_obj):
         mult_a_sym_cnt = -1
         mult_b_sym_cnt = -1
         rem_sym_cnt = -1
         
-        mult_a = self.number_list_obj.number_list[list_idx][0]
-        mult_b = self.number_list_obj.number_list[list_idx][1]
-        remainder = self.number_list_obj.number_list[list_idx][2]
+        """mult_a = self.number_list_obj.number_list[list_idx][0]"""
+        """mult_b = self.number_list_obj.number_list[list_idx][1]"""
+        """remainder = self.number_list_obj.number_list[list_idx][2]"""
+        mult_a = number_obj[0]
+        mult_b = number_obj[1]
+        remainder = number_obj[2]
 
-        #print( "Base symbols count %2d : %2d,  %2d,  %2d" % (list_idx, mult_a, mult_b, remainder ), file=self.file_obj )
+        print( "Base symbols count %2d : %2d,  %2d,  %2d" % (list_idx, mult_a, mult_b, remainder ), file=self.file_obj )
         
         """ range idx matches symbol count - ignore 0 idx """
         cnt_idx = 1
@@ -129,7 +137,7 @@ class SymbolCount(object):
         
         """ Set up the range list for the base """
         base = self.min_base
-        self.__symbol_count_for_base(base)
+        """self.__symbol_count_for_base(base)"""
         self.__get_symbol_count()
         for min_obj in self.tracker_obj.object_tracker_list :
             print( "Base symbols count a = %2d, b = %2d,  c = %2d, base : %2d" % (min_obj[0], min_obj[1], min_obj[2], min_obj[3]))

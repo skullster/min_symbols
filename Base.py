@@ -40,9 +40,28 @@ class Base(object):
             max_range = pow(self.base, symbol_count) - 1
          
         return [min_range, max_range]
+
+    def set_new_base(self, new_base):
+        self.base = new_base
+        self.symbol_arr.clear()
+        self.symbol_arr = [0]
+        self.symbol_count = len( self.symbol_arr )
+
       
 if __name__ == "__main__":
-    aBase = Base(2)
+    aBase = Base(11)
+    """ 10311 """
+    aBase.convert_number(1048576)
+    aBase.print_conversion()
+    
+    no_symbs = aBase.get_symbol_count()
+    print( no_symbs )
+    
+    range_list = aBase.get_range(39)
+    
+    print("%d %d" % (range_list[0], range_list[1]))
+
+    aBase.set_new_base(2)
     """ 10311 """
     aBase.convert_number(1048576)
     aBase.print_conversion()
