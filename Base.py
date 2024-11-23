@@ -61,9 +61,9 @@ if __name__ == "__main__":
     
     print("%d %d" % (range_list[0], range_list[1]))
 
-    aBase.set_new_base(2)
+    aBase.set_new_base(31)
     """ 10311 """
-    aBase.convert_number(1048576)
+    aBase.convert_number(31)
     aBase.print_conversion()
     
     no_symbs = aBase.get_symbol_count()
